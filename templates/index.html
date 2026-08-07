@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACH XML Processor</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      padding: 48px 40px;
+      width: 440px;
+      max-width: 95vw;
+      text-align: center;
+    }
+
+    .card h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a202c;
+      margin-bottom: 8px;
+    }
+
+    .card p.subtitle {
+      font-size: 0.92rem;
+      color: #718096;
+      margin-bottom: 32px;
+    }
+
+    button#runBtn {
+      background: #2b6cb0;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 36px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      width: 100%;
+    }
+
+    button#runBtn:hover:not(:disabled) {
+      background: #2c5282;
+    }
+
+    button#runBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status-box {
+      margin-top: 24px;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      text-align: left;
+      display: none;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .status-box.running {
+      display: block;
+      background: #ebf8ff;
+      color: #2b6cb0;
+      border: 1px solid #bee3f8;
+    }
+
+    .status-box.success {
+      display: block;
+      background: #f0fff4;
+      color: #276749;
+      border: 1px solid #9ae6b4;
+    }
+
+    .status-box.error {
+      display: block;
+      background: #fff5f5;
+      color: #c53030;
+      border: 1px solid #feb2b2;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #bee3f8;
+      border-top-color: #2b6cb0;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Added for better readability */
+    .info {
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: #555;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>ACH XML Processor</h1>
+    <p class="subtitle">Click the button below to process and transform XML payment files.</p>
+
+    <button id="runBtn" onclick="runProcess()">Run Process</button>
+
+    <div id="statusBox" class="status-box"></div>
+
+    <!-- Added: Small info section for clarity -->
+    <div class="info">
+      <strong>Note:</strong> Only run when XML files are ready in the temp folders.<br>
+      Use the VM link (http://192.168.6.120:5000/), or the desktop link (http://192.168.6.118:5000/) if the previous one fails.
+    </div>
+  </div>
+
+  <script>
+    async function runProcess() {
+      const btn = document.getElementById("runBtn");
+      const box = document.getElementById("statusBox");
+
+      // Disable button and show running state
+      btn.disabled = true;
+      box.className = "status-box running";
+      box.innerHTML = '<span class="spinner"></span>Processing XML files… Please wait.';
+
+      try {
+        const res = await fetch("/api/run", { 
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
+        
+        const data = await res.json();
+
+        if (res.ok && data.status === "success") {
+          box.className = "status-box success";
+          box.textContent = "✔ " + (data.message || "XML files processed successfully.");
+        } else {
+          box.className = "status-box error";
+          box.textContent = "✖ " + (data.message || "Processing failed. Check console for details.");
+        }
+      } catch (err) {
+        box.className = "status-box error";
+        box.textContent = "✖ Network error: " + err.message;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
