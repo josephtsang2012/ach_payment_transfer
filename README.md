@@ -42,20 +42,25 @@ python app.py
 Notes: In order for these processes to run, you **must** connect to Topcast network using internet cable. 
 1. **Pentagon ERP** is reconfigured so that generated XML files are first placed in temporary folders (`temp_com1`, `temp_com6`, `temp_com8`).
     i.   Nevigate to `PAIN HSBC export file setup` in the Financials' Administration module.
-   <img width="1429" height="740" alt="p2000 setup1" src="https://github.com/user-attachments/assets/7e15a9a7-9be4-44b8-bb04-f609cac204ab" />
+<img width="1429" height="740" alt="1" src="https://github.com/user-attachments/assets/c4ae89ca-5deb-42ed-911e-76c06506428c" />
+
    
     ii.  Set up the output path, organization identification (has to be set up with the bank first), and counter.
-   <img width="1308" height="630" alt="p2000 setup" src="https://github.com/user-attachments/assets/f6dcc9ad-329a-460a-9862-04677681cdbd" />
+<img width="1308" height="630" alt="2" src="https://github.com/user-attachments/assets/b077e035-2f95-477d-8cfb-59aac6402d50" />
+
 
 2. User accesses the Flask web app and triggers the process.
-   <img width="1057" height="691" alt="link" src="https://github.com/user-attachments/assets/353a7458-0883-4d34-b4f4-49ef834a3d9c" />
+<img width="1057" height="691" alt="3" src="https://github.com/user-attachments/assets/f3921919-9f78-403e-9c36-3cdc8d49c5fb" />
+
 
 3. The script (`HK_non_trade.py`) reads the original XMLs, queries the DB for invoice numbers, modifies the XML, moves the original to backup, and writes the revised XML to the **live** folders. Temporay folders will be cleared.
-   <img width="1029" height="525" alt="ACH path" src="https://github.com/user-attachments/assets/9ffd9838-9c52-4a48-9707-a8c2c2b18870" />
+<img width="1029" height="525" alt="4" src="https://github.com/user-attachments/assets/7eb92593-438a-489d-bf40-ef99b3958b52" />
+
    
 4. The revised files are then pushed from the company to the HSBC server (via SFTP or portal upload).
 5. Once processed by HSBC, the files disappear from the live folder. Original unrevised XMLs are kept in the backup folder. Ideally the payment should appear in the HSBC portal. If there is any unexpected outcome, you may check the incoming messages from HSBC (`ACCP` means Accepted, `REJT` means Rejected).
-   <img width="1305" height="465" alt="hsbc massage" src="https://github.com/user-attachments/assets/bda5d506-3eb2-4aa2-968e-50f2871a7dc0" />
+<img width="1305" height="465" alt="5" src="https://github.com/user-attachments/assets/8637b1f8-9131-446b-90be-b272916eb14f" />
+
 
 ### Folder Paths
 - **Temp**: `\\top-syslog\BLUETEMP\ACH\temp_comX` (X = 1,6,8)
@@ -66,7 +71,8 @@ Notes: In order for these processes to run, you **must** connect to Topcast netw
 - **Backup**: `\\Top-syslog\BLUETEMP\ACH\backup`
 
 ### Workflow Diagram
-<img width="571" height="462" alt="flow" src="https://github.com/user-attachments/assets/2e5f7af5-0762-4095-a760-a06978a4109a" />
+<img width="571" height="462" alt="6" src="https://github.com/user-attachments/assets/7f3b2e04-e2ab-4c66-9142-730fe4bf21d7" />
+
 
 ---
 ## Hosting
@@ -104,7 +110,8 @@ Keep the Command Prompt window open. The web UI will be available at the IP addr
 
 ## Troubleshooting
 ### 1. WinError 1326: The user name or password is incorrect (\\top-syslog...)
-<img width="619" height="581" alt="ach_win1326err" src="https://github.com/user-attachments/assets/bf7a2c15-4e77-4e0f-acb0-78a40523ded0" />
+<img width="619" height="581" alt="7" src="https://github.com/user-attachments/assets/7f0e9d88-ba33-423e-affe-bfd6abe434b5" />
+
 
 Common on the VM.
 Fix:
