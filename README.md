@@ -54,12 +54,12 @@ Notes: In order for these processes to run, you **must** connect to Topcast netw
 
 
 3. The script (`HK_non_trade.py`) reads the original XMLs, queries the DB for invoice numbers, modifies the XML, moves the original to backup, and writes the revised XML to the **live** folders. Temporay folders will be cleared.
-<img width="1029" height="525" alt="4" src="https://github.com/user-attachments/assets/7eb92593-438a-489d-bf40-ef99b3958b52" />
+<img width="808" height="480" alt="1" src="https://github.com/user-attachments/assets/c732d078-79f5-4fd8-87ea-fe1d53616f69" />
 
    
 4. The revised files are then pushed from the company to the HSBC server (via SFTP or portal upload).
 5. Once processed by HSBC, the files disappear from the live folder. Original unrevised XMLs are kept in the backup folder. Ideally the payment should appear in the HSBC portal. If there is any unexpected outcome, you may check the incoming messages from HSBC (`ACCP` means Accepted, `REJT` means Rejected).
-<img width="1305" height="465" alt="5" src="https://github.com/user-attachments/assets/8637b1f8-9131-446b-90be-b272916eb14f" />
+<img width="838" height="355" alt="2" src="https://github.com/user-attachments/assets/55af9cb4-2b3b-4efa-91ec-48f549f2ae8e" />
 
 
 ### Folder Paths
